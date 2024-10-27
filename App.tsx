@@ -37,7 +37,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
         style={[
           styles.sectionTitle,
           {
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: '#0D7C66',
           },
         ]}>
         {title}
@@ -46,7 +46,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
         style={[
           styles.sectionDescription,
           {
-            color: isDarkMode ? Colors.light : Colors.dark,
+            color: '#254336',
           },
         ]}>
         {children}
@@ -74,20 +74,19 @@ function App(): React.JSX.Element {
         <Header />
         <View
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            backgroundColor: '#E9EED9',
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
+          <Section title="Nama">
+            Salsabila Eka Fadila
           </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
+          <Section title="NIM">
+            22/494469/SV/20836
           </Section>
-          <Section title="Debug">
-            <DebugInstructions />
+          <Section title="Kelas">
+            PGPBL A
           </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
+          <Section title="Media Sosial">
+            Berikut media sosial yang dapat diakses:
           </Section>
           <LearnMoreLinks />
         </View>
@@ -102,13 +101,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '600',
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: '500',
   },
   highlight: {
     fontWeight: '700',
