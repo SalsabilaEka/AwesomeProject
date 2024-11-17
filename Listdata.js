@@ -32,6 +32,18 @@ const Listdata = () => {
             .finally(() => setLoading(false));
     }
 
+    function deleteData(id) {
+        fetch(jsonUrl + '/' + id, {
+            method: 'DELETE',
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                alert('Data terhapus');
+                refreshPage();
+            })
+    }
+
     return (
         <SafeAreaView>
             {isLoading ? (
@@ -63,7 +75,15 @@ const Listdata = () => {
                                         </View>
                                     </View>
                                 </TouchableOpacity>
-
+                                <View style={styles.form}>
+                                    <Button title="Hapus"
+                                        onPress={() => Alert.alert('Hapus data', 'Yakin akan menghapus data ini?', [
+                                            { text: 'Tidak', onPress: () => console.log('button tidak') },
+                                            { text: 'Ya', onPress: () => deleteData(item.id) },
+                                        ])}
+                                        color={'red'}
+                                    />
+                                </View>
                             </View>
                         )}
                     />

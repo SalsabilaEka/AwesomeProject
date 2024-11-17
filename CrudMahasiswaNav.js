@@ -9,7 +9,7 @@ import { faUserGraduate } from '@fortawesome/free-solid-svg-icons/faUserGraduate
 import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub';
 import { WebView } from 'react-native-webview';
 import Createdata from './Createdata';
-import DataMahasiswa from './ListData';
+import DataMahasiswa from './Listdata';
 
 function HomeScreen() {
     return (
