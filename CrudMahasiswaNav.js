@@ -6,10 +6,13 @@ import Profil from './App';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons/faUserGraduate';
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons/faCirclePlus';
+import { faUserPen } from '@fortawesome/free-solid-svg-icons/faUserPen';
 import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub';
 import { WebView } from 'react-native-webview';
 import Createdata from './Createdata';
 import DataMahasiswa from './Listdata';
+import EditData from './Editdata';
 
 function HomeScreen() {
     return (
@@ -23,11 +26,9 @@ function DataMahasiswaScreen() {
     );
 }
 
-function WebScreen() {
+function EditScreen() {
     return (
-        <WebView
-            source={{ uri: 'https://github.com/SalsabilaEka' }}
-        />
+        <EditData />
     );
 }
 
@@ -37,25 +38,26 @@ export default function App() {
     return (
         <NavigationContainer>
             <Tab.Navigator>
-                <Tab.Screen name="Profil" component={HomeScreen}
+                <Tab.Screen name="Tambah" component={HomeScreen}
                     options={{
                         headerShown: false,
                         tabBarIcon: ({ color }) => (
-                            <FontAwesomeIcon icon={faUser} size={20} color={color} />
+                            <FontAwesomeIcon icon={faCirclePlus} size={20} color={color} />
                         ),
                     }}
                 />
-                <Tab.Screen name="Data Mahasiswa" component={DataMahasiswaScreen}
+                <Tab.Screen name="Mahasiswa" component={DataMahasiswaScreen}
                     options={{
                         tabBarIcon: ({ color }) => (
                             <FontAwesomeIcon icon={faUserGraduate} size={20} color={color} />
                         ),
                     }}
                 />
-                <Tab.Screen name="Github" component={WebScreen}
+                <Tab.Screen name="Edit" component={EditScreen}
                     options={{
+                        headerShown: false,
                         tabBarIcon: ({ color }) => (
-                            <FontAwesomeIcon icon={faGithub} size={20} color={color} />
+                            <FontAwesomeIcon icon={faUserPen} size={20} color={color} />
                         ),
                     }}
                 />
