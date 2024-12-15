@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Map with Markers</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map" style="height: 100vh;"></div>
+    <script>
+        // Inisialisasi peta
+        var map = L.map('map').setView([-7.68971785, 110.38127505], 11); // Fokus di Jogja
+
+        // Menambahkan berbagai jenis basemap
+        var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {});
+        
+        // Menambahkan basemap Satelit menggunakan provider dari ESRI
+        var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '&copy; <a href="https://www.esri.com/en-us/arcgis/about-arcgis/overview">Esri</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        });
+
+        // Menambahkan basemap CartoDB (Peta yang lebih cerah dan minimalis)
+        var cartoDBLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://carto.com/attributions">CartoDB</a>'
+        });
+
+        // Menambahkan basemap default ke peta
+        osmLayer.addTo(map);
+
+        // URL JSON Server
+        var jsonUrl = 'http://10.0.2.2:3000/umkm'; // Sesuaikan URL dengan server Anda
+
+        // Tambahkan marker ke peta
+        function addMarker(lat, lng, popupContent) {
+            var marker = L.marker([lat, lng])
+                .addTo(map)
+                .bindPopup(popupContent); // Popup hanya akan muncul jika diklik
+        }
+
+        // Fungsi untuk memuat data dari server dan menambahkan marker
+        function loadMarkers() {
+            fetch(jsonUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data fetched:', data); // Debugging: tampilkan data di konsol
+                    data.forEach(item => {
+                        if (item.latitude && item.longitude) {
+                            // Konten popup yang lebih dinamis
+                            const popupContent = `
+                                <strong>${item.umkm || 'UMKM Tidak Diketahui'}</strong><br>
+                                Alamat: ${item.alamat || 'Tidak Ada Informasi'}<br>
+                                Kontak: ${item.kontak || 'Tidak Ada Kontak'}
+                            `;
+                            addMarker(item.latitude, item.longitude, popupContent);
+                        } else {
+                            console.warn('Invalid coordinates for item:', item); // Debugging
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching or processing data:', error);
+                });
+        }
+
+        // Panggil fungsi untuk memuat marker
+        loadMarkers();
+
+        // Load GeoJSON boundary
+        var slemanGeoJSONUrl = './data/Sleman.geojson';
+
+        function loadBoundary() {
+            fetch(slemanGeoJSONUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    var boundaryLayer = L.geoJSON(data, {
+                        style: {
+                            color: "#FF0000",
+                            weight: 2,
+                            fillOpacity: 0
+                        }
+                    }).addTo(map);
+
+                    map.fitBounds(boundaryLayer.getBounds());
+                })
+                .catch(error => {
+                    console.error('Error loading GeoJSON:', error);
+                });
+        }
+
+        loadBoundary();
+
+        // Menambahkan kontrol layer untuk beralih antara basemaps
+        L.control.layers({
+            "OpenStreetMap": osmLayer,
+            "Satellite": satelliteLayer,
+            "CartoDB": cartoDBLayer
+        }).addTo(map);
+
+
+    </script>
+</body>
+
+</html>
